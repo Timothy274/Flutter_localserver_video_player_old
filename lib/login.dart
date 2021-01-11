@@ -11,9 +11,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-void main() => runApp(
-    MaterialApp(home:Login())
-);
+void main() => runApp(MaterialApp(home: Login()));
 
 class _LoginState extends State<Login> {
   @override
@@ -24,11 +22,11 @@ class _LoginState extends State<Login> {
   final password = TextEditingController();
 
   Future<List<DataUser>> getUser() async {
-    final response = await http.get("http://timothy.buzz/video_pi/user.php");
+    final response = await http.get("http://45.77.170.18/video_pi/user.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
-      _datauser.add(DataUser.fromJson(Data));
+        _datauser.add(DataUser.fromJson(Data));
       }
     });
   }
@@ -41,17 +39,18 @@ class _LoginState extends State<Login> {
   }
 
   void _showdialogerror() {
-  // flutter defined function
+    // flutter defined function
     showDialog(
-    context: context,
-    builder: (BuildContext context) {
-    // return object of type Dialog
-      return AlertDialog(
-        title: new Text("Error Login"),
-        content: new Text("Username / Password salah, Mohon lakukan login ulang"),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text("Close"),
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Error Login"),
+          content:
+              new Text("Username / Password salah, Mohon lakukan login ulang"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -62,16 +61,16 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future cek() async{
+  Future cek() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-      if(pref.getBool("isLogin")){
-        if(pref.getString("username") == "admin"){
-          Navigator.push(context, MaterialPageRoute(builder: (
-          context) => Admin_Home()));
-        } else {
-          Navigator.push(context, MaterialPageRoute(builder: (
-          context) => MyHomePage()));
-        }
+    if (pref.getBool("isLogin")) {
+      if (pref.getString("username") == "admin") {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Admin_Home()));
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      }
     }
   }
 
@@ -80,91 +79,97 @@ class _LoginState extends State<Login> {
     String _password = password.text;
     String susername = "";
     String spassword = "";
-    for(int a = 0;a < _datauser.length;a++){
-      if(_datauser[a].username == _username){
+    for (int a = 0; a < _datauser.length; a++) {
+      if (_datauser[a].username == _username) {
         susername = _username;
       }
-      if(_datauser[a].password == _password){
+      if (_datauser[a].password == _password) {
         spassword = _password;
       }
     }
 
-    if((susername == "") || (spassword == "")){
+    if ((susername == "") || (spassword == "")) {
       SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setBool("isLogin", false);
-        _showdialogerror();
-      } else if((susername == "admin") && (spassword == "admin")){
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setBool("isLogin", true);
-        pref.setString("username", susername);
-        Navigator.push(context, MaterialPageRoute(builder: (
-        context) => Admin_Home()));
-      } else {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setBool("isLogin", true);
-        pref.setString("username", susername);
-        Navigator.push(context, MaterialPageRoute(builder: (
-        context) => MyHomePage()));
-      }
+      pref.setBool("isLogin", false);
+      _showdialogerror();
+    } else if ((susername == "admin") && (spassword == "admin")) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setBool("isLogin", true);
+      pref.setString("username", susername);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Admin_Home()));
+    } else {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setBool("isLogin", true);
+      pref.setString("username", susername);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: false,
-        body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(159, 249, 243, 98)
-        ),
-          child: Stack(
-            children: <Widget>[
+        home: Scaffold(
+      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(159, 249, 243, 98)),
+        child: Stack(
+          children: <Widget>[
             Center(
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
                     Container(
-                        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 50.0),
+                        margin: const EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 50.0),
                         child: Image(
                           image: AssetImage(
                             'assets/ic_launcher.png',
                           ),
-                        )
-                    ),
+                        )),
                     Container(
                       margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: TextField(
                         controller: username,
-                        style: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                        style:
+                            TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(
+                                color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(
+                                color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           hintText: "Username",
-                          hintStyle: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                          hintStyle:
+                              TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         ),
                       ),
                     ),
-                    
                     Container(
-                      margin: const EdgeInsets.only(top: 30, left: 20.0, right: 20.0),
+                      margin: const EdgeInsets.only(
+                          top: 30, left: 20.0, right: 20.0),
                       child: TextField(
                         controller: password,
-                        style: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                        style:
+                            TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         obscureText: true,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(
+                                color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(
+                                color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           hintText: "Password",
-                          hintStyle: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                          hintStyle:
+                              TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         ),
                       ),
                     ),
@@ -183,37 +188,28 @@ class _LoginState extends State<Login> {
                                 // );
                                 validasi();
                               },
-                              child: const Text(
-                                  'Sign In',
+                              child: const Text('Sign In',
                                   style: TextStyle(
-                                    fontSize: 30,
-                                    color: Color.fromRGBO(159, 249, 243, 98)
-                                  )
-                              ),
-                            )
-                        )
-                    ),
+                                      fontSize: 30,
+                                      color:
+                                          Color.fromRGBO(159, 249, 243, 98))),
+                            ))),
                     Divider(
-                        height: 10.0,
+                      height: 10.0,
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 10, bottom: 20),
-                      child: Text(
-                        'Sign Up',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromRGBO(11, 189, 180, 1)
-                        )
-                      )
-                    )
+                        margin: const EdgeInsets.only(top: 10, bottom: 20),
+                        child: Text('Sign Up',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromRGBO(11, 189, 180, 1))))
                   ],
                 ),
               ),
             )
-            ],
-          ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 }
