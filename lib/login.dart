@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
   final password = TextEditingController();
 
   Future<List<DataUser>> getUser() async {
-    final response = await http.get("http://45.77.170.18/video_pi/user.php");
+    final response = await http.get("http://timothy.buzz/video_pi/user.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
