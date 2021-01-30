@@ -19,13 +19,49 @@ class _Ac_Mgm_AdminState extends State<Ac_Mgm_Admin> {
   }
 
   Future<List<DataUser>> getData() async {
-    final response = await http.get("http://timothy.buzz/video_pi/user.php");
+    dataFolder.clear();
+    final response =
+        await http.get("http://timothy.buzz/video_pi/user_account/user.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
         dataFolder.add(DataUser.fromJson(Data));
       }
     });
+  }
+
+  void hapus(id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Peringatan"),
+          content: new Text("Apakah anda yakin ingin menghapus user ini ?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Hapus"),
+              onPressed: () {
+                var url =
+                    "http://timothy.buzz/video_pi/user_account/delete_user.php";
+                http.post(url, body: {
+                  'id_user': id,
+                });
+                Navigator.of(context).pop();
+                getData();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -73,8 +109,10 @@ class _Ac_Mgm_AdminState extends State<Ac_Mgm_Admin> {
                                       borderRadius: new BorderRadius.all(
                                         const Radius.circular(10.0),
                                       )),
-                                  child: Column(
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
@@ -88,14 +126,18 @@ class _Ac_Mgm_AdminState extends State<Ac_Mgm_Admin> {
                                               color: Colors.white),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.all(10),
-                                      //   child: Stack(
-                                      //   alignment: FractionalOffset.bottomRight +
-                                      //       const FractionalOffset(-0.1, -0.1),
-                                      //   children: <Widget>[
-                                      //   ]),
-                                      // )
+                                      GestureDetector(
+                                        onTap: () {
+                                          hapus(dataFolder[index].id_user);
+                                        },
+                                        child: (Container(
+                                          child: (Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 50.0,
+                                          )),
+                                        )),
+                                      )
                                     ],
                                   ),
                                 ),

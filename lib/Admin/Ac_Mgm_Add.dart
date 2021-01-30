@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:video_player_pi/Admin/home.dart';
 import 'package:video_player_pi/Map/folder_pck.dart';
+import 'package:jiffy/jiffy.dart';
 
 class Ac_Mgm_Admin_Add extends StatefulWidget {
   @override
@@ -24,37 +25,21 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
     var email = _controllerEmail.text;
     var password = _controllerPassword.text;
     var repassword = _controllerRePassword.text;
-    Navigator.of(context).push(new MaterialPageRoute(
-        builder: (BuildContext context) =>
-            new Ac_Mgm_Admin_Add_CheckBox(nama, username, email, password)));
-
-    // if (nama.isEmpty ||
-    //     username.isEmpty ||
-    //     email.isEmpty ||
-    //     password.isEmpty ||
-    //     repassword.isEmpty) {
-    //   dialogerrorisidata();
-    // } else {
-    //   if (password != repassword) {
-    //     dialogerrorpassword();
-    //   } else {
-    //     Navigator.of(context).push(new MaterialPageRoute(
-    //         builder: (BuildContext context) => new Ac_Mgm_Admin_Add_CheckBox(
-    //             nama, username, email, password)));
-    //   }
-    // }
-  }
-
-  void pass(nama, username, email, password) {
-    // var url = "http://timothy.buzz/video_pi/add_user.php";
-    // http.post(url, body: {
-    //   "Nama": nama,
-    //   "Username": username,
-    //   "Email": email,
-    //   "Password": password
-    // });
-    // Navigator.of(context).push(new MaterialPageRoute(
-    //     builder: (BuildContext context) => new Admin_Home()));
+    if (nama.isEmpty ||
+        username.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        repassword.isEmpty) {
+      dialogerrorisidata();
+    } else {
+      if (password != repassword) {
+        dialogerrorpassword();
+      } else {
+        Navigator.of(context).push(new MaterialPageRoute(
+            builder: (BuildContext context) => new Ac_Mgm_Admin_Add_CheckBox(
+                nama, username, email, password)));
+      }
+    }
   }
 
   void dialogerrorisidata() {
@@ -246,6 +231,11 @@ class Ac_Mgm_Admin_Add_CheckBox extends StatefulWidget {
 class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
   List<Folder_pck> dataFolder = [];
   List _selectedId = List();
+  var bulan = Jiffy().format("MM");
+  var tanggal = Jiffy().format("dd");
+  var jam = Jiffy().format("HH");
+  var menit = Jiffy().format("mm");
+  var detik = Jiffy().format("SS");
 
   void initState() {
     super.initState();
@@ -263,9 +253,71 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
     });
   }
 
+  void dialogerrorisidata() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Data yang anda masukkan kurang"),
+          content:
+              new Text("Mohon untuk periksa kembali data yang anda masukkan"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void cek() {
-    Navigator.of(context).push(new MaterialPageRoute(
-        builder: (BuildContext context) => new Admin_Home()));
+    if (_selectedId.isEmpty) {
+      print("kosong");
+      dialogerrorisidata();
+    } else {
+      int usr = widget.username.length;
+      int eml = widget.email.length;
+      var id = (widget.username +
+          usr.toString() +
+          eml.toString() +
+          bulan +
+          tanggal +
+          jam +
+          menit +
+          detik);
+      pass_akses(id);
+      pass_akun(id);
+      Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context) => new Admin_Home()));
+    }
+  }
+
+  void pass_akses(id) {
+    var url = "http://timothy.buzz/video_pi/user_account/add_user_akses.php";
+    for (int a = 0; a < _selectedId.length; a++) {
+      http.post(url, body: {
+        "ID": id,
+        "Akses": _selectedId[a],
+      });
+    }
+  }
+
+  void pass_akun(id) {
+    var url = "http://timothy.buzz/video_pi/user_account/add_user.php";
+    http.post(url, body: {
+      "Id_user": id,
+      "Nama": widget.nama,
+      "Username": widget.username,
+      "Email": widget.email,
+      "Password": widget.password
+    });
   }
 
   void _onCategorySelected(bool selected, _searchId) {
@@ -370,7 +422,9 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
                             borderRadius: BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            cek();
+                          },
                           textColor: Colors.black,
                           padding: const EdgeInsets.all(0.0),
                           child: Container(

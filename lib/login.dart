@@ -79,6 +79,7 @@ class _LoginState extends State<Login> {
     String _password = password.text;
     String susername = "";
     String spassword = "";
+
     for (int a = 0; a < _datauser.length; a++) {
       if (_datauser[a].username == _username) {
         susername = _username;
