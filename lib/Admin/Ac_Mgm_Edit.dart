@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:video_player_pi/Map/folder_pck.dart';
 import 'package:http/http.dart' as http;
+import 'package:video_player_pi/Map/user_access.dart';
 
 import 'home.dart';
 
@@ -39,7 +40,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
     } else {
       Navigator.of(context).push(new MaterialPageRoute(
           builder: (BuildContext context) =>
-              new Ac_Mgm_Admin_Add_CheckBox(nama, username, email, password)));
+              new Ac_Mgm_Admin_Edit_CheckBox(widget.id)));
     }
   }
 
@@ -200,25 +201,48 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
   }
 }
 
-class Ac_Mgm_Admin_Add_CheckBox extends StatefulWidget {
-  String nama, username, email, password;
-  Ac_Mgm_Admin_Add_CheckBox(
-      this.nama, this.username, this.email, this.password);
+class Ac_Mgm_Admin_Edit_CheckBox extends StatefulWidget {
+  String id;
+  Ac_Mgm_Admin_Edit_CheckBox(this.id);
   @override
-  _Ac_Mgm_Admin_Add_CheckBoxState createState() =>
-      _Ac_Mgm_Admin_Add_CheckBoxState();
+  Ac_Mgm_Admin_Edit_CheckBoxState createState() =>
+      Ac_Mgm_Admin_Edit_CheckBoxState();
 }
 
-class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
+class Ac_Mgm_Admin_Edit_CheckBoxState
+    extends State<Ac_Mgm_Admin_Edit_CheckBox> {
   List<Folder_pck> dataFolder = [];
+  List<usr_acss> dataAkses = [];
+  List dataAkses_Id = List();
+  bool value = true;
   List _selectedId = List();
 
   void initState() {
     super.initState();
     getData();
+    getDataAkses();
+    print("A");
+  }
+
+  Future<List> getDataAkses() async {
+    await Future.delayed(Duration(seconds: 2));
+    final response = await http
+        .get("http://timothy.buzz/video_pi/user_account/get_user_akses.php");
+    final responseJson = json.decode(response.body);
+    setState(() {
+      for (Map Data in responseJson) {
+        dataAkses.add(usr_acss.fromJson(Data));
+      }
+      for (int a = 0; a < dataAkses.length; a++) {
+        if (widget.id == dataAkses[a].id) {
+          dataAkses_Id.add(dataAkses[a].akses);
+        }
+      }
+    });
   }
 
   Future<List> getData() async {
+    await Future.delayed(Duration(seconds: 2));
     final response =
         await http.get("http://timothy.buzz/video_pi/get_folder.php");
     final responseJson = json.decode(response.body);
@@ -229,22 +253,34 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
     });
   }
 
+  void cek_akses() {
+    // print(dataAkses.length);
+    // print(dataFolder.length);
+    for (int a = 0; a < dataFolder.length; a++) {
+      if (dataAkses_Id.contains(dataFolder[a].id)) {
+        print('ada');
+      } else {
+        print('tidak ada');
+      }
+    }
+  }
+
   void cek() {
     Navigator.of(context).push(new MaterialPageRoute(
         builder: (BuildContext context) => new Admin_Home()));
   }
 
-  void _onCategorySelected(bool selected, _searchId) {
-    if (selected == true) {
-      setState(() {
-        _selectedId.add(_searchId);
-      });
-    } else {
-      setState(() {
-        _selectedId.remove(_searchId);
-      });
-    }
-  }
+  // void _onCategorySelected(bool selected, _searchId) {
+  //   if (selected == true) {
+  //     setState(() {
+  //       _selectedId.add(_searchId);
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _selectedId.remove(_searchId);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -312,12 +348,7 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
                                           margin: const EdgeInsets.only(
                                               right: 20.0),
                                           child: Checkbox(
-                                            value: _selectedId
-                                                .contains(dataFolder[index].id),
-                                            onChanged: (bool selected) {
-                                              _onCategorySelected(selected,
-                                                  (dataFolder[index].id));
-                                            },
+                                            value: value,
                                           ),
                                           alignment: Alignment.centerRight,
                                         ),
