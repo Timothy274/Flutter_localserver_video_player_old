@@ -1,0 +1,4 @@
+{
+    "dart.useKnownChromeOSPorts": false,
+    "dart.lineLength": 140
+}

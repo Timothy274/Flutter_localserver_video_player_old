@@ -25,19 +25,14 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
     var email = _controllerEmail.text;
     var password = _controllerPassword.text;
     var repassword = _controllerRePassword.text;
-    if (nama.isEmpty ||
-        username.isEmpty ||
-        email.isEmpty ||
-        password.isEmpty ||
-        repassword.isEmpty) {
+    if (nama.isEmpty || username.isEmpty || email.isEmpty || password.isEmpty || repassword.isEmpty) {
       dialogerrorisidata();
     } else {
       if (password != repassword) {
         dialogerrorpassword();
       } else {
-        Navigator.of(context).push(new MaterialPageRoute(
-            builder: (BuildContext context) => new Ac_Mgm_Admin_Add_CheckBox(
-                nama, username, email, password)));
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) => new Ac_Mgm_Admin_Add_CheckBox(nama, username, email, password)));
       }
     }
   }
@@ -50,8 +45,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Data yang anda masukkan kurang"),
-          content:
-              new Text("Mohon untuk periksa kembali data yang anda masukkan"),
+          content: new Text("Mohon untuk periksa kembali data yang anda masukkan"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -111,8 +105,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 30),
-                  margin:
-                      const EdgeInsets.only(top: 50, left: 20.0, right: 20.0),
+                  margin: const EdgeInsets.only(top: 50, left: 20.0, right: 20.0),
                   child: Column(children: [
                     Column(
                       children: [
@@ -120,8 +113,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Name",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -136,8 +128,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Username",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(controller: _controllerUsername)
@@ -150,8 +141,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Email",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -166,8 +156,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Password",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -182,8 +171,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Re-Password",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -207,8 +195,7 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
                             padding: const EdgeInsets.all(0.0),
                             child: Container(
                               padding: EdgeInsets.only(left: 20, right: 20),
-                              child: Text("Add User".toUpperCase(),
-                                  style: TextStyle(fontSize: 20)),
+                              child: Text("Add User".toUpperCase(), style: TextStyle(fontSize: 20)),
                             ))),
                   ]),
                 )
@@ -221,11 +208,9 @@ class _Ac_Mgm_Admin_AddState extends State<Ac_Mgm_Admin_Add> {
 
 class Ac_Mgm_Admin_Add_CheckBox extends StatefulWidget {
   String nama, username, email, password;
-  Ac_Mgm_Admin_Add_CheckBox(
-      this.nama, this.username, this.email, this.password);
+  Ac_Mgm_Admin_Add_CheckBox(this.nama, this.username, this.email, this.password);
   @override
-  _Ac_Mgm_Admin_Add_CheckBoxState createState() =>
-      _Ac_Mgm_Admin_Add_CheckBoxState();
+  _Ac_Mgm_Admin_Add_CheckBoxState createState() => _Ac_Mgm_Admin_Add_CheckBoxState();
 }
 
 class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
@@ -243,8 +228,7 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
   }
 
   Future<List> getData() async {
-    final response =
-        await http.get("http://timothy.buzz/video_pi/get_folder.php");
+    final response = await http.get("http://timothy.buzz/video_pi/get_folder.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
@@ -261,8 +245,7 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Data yang anda masukkan kurang"),
-          content:
-              new Text("Mohon untuk periksa kembali data yang anda masukkan"),
+          content: new Text("Mohon untuk periksa kembali data yang anda masukkan"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -284,18 +267,10 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
     } else {
       int usr = widget.username.length;
       int eml = widget.email.length;
-      var id = (widget.username +
-          usr.toString() +
-          eml.toString() +
-          bulan +
-          tanggal +
-          jam +
-          menit +
-          detik);
+      var id = (widget.username + usr.toString() + eml.toString() + bulan + tanggal + jam + menit + detik);
       pass_akses(id);
       pass_akun(id);
-      Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context) => new Admin_Home()));
+      Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Admin_Home()));
     }
   }
 
@@ -311,13 +286,8 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
 
   void pass_akun(id) {
     var url = "http://timothy.buzz/video_pi/user_account/add_user.php";
-    http.post(url, body: {
-      "Id_user": id,
-      "Nama": widget.nama,
-      "Username": widget.username,
-      "Email": widget.email,
-      "Password": widget.password
-    });
+    http.post(url,
+        body: {"Id_user": id, "Nama": widget.nama, "Username": widget.username, "Email": widget.email, "Password": widget.password});
   }
 
   void _onCategorySelected(bool selected, _searchId) {
@@ -358,8 +328,7 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           //   physics: BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (builder, index) {
                             return new GestureDetector(
                                 onTap: () {},
@@ -369,40 +338,30 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
                                       children: [
                                         Container(
                                           decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  11, 189, 180, 1),
-                                              borderRadius:
-                                                  new BorderRadius.all(
+                                              color: Color.fromRGBO(11, 189, 180, 1),
+                                              borderRadius: new BorderRadius.all(
                                                 const Radius.circular(10.0),
                                               )),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.all(12),
+                                                padding: const EdgeInsets.all(12),
                                                 child: Text(
                                                   dataFolder[index].name,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 20,
-                                                      color: Colors.white),
+                                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 20, color: Colors.white),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(
-                                              right: 20.0),
+                                          margin: const EdgeInsets.only(right: 20.0),
                                           child: Checkbox(
-                                            value: _selectedId
-                                                .contains(dataFolder[index].id),
+                                            value: _selectedId.contains(dataFolder[index].id),
                                             onChanged: (bool selected) {
-                                              _onCategorySelected(selected,
-                                                  (dataFolder[index].id));
+                                              _onCategorySelected(selected, (dataFolder[index].id));
                                             },
                                           ),
                                           alignment: Alignment.centerRight,
@@ -429,8 +388,7 @@ class _Ac_Mgm_Admin_Add_CheckBoxState extends State<Ac_Mgm_Admin_Add_CheckBox> {
                           padding: const EdgeInsets.all(0.0),
                           child: Container(
                             padding: EdgeInsets.only(left: 20, right: 20),
-                            child: Text("Add User".toUpperCase(),
-                                style: TextStyle(fontSize: 20)),
+                            child: Text("Add User".toUpperCase(), style: TextStyle(fontSize: 20)),
                           ))),
                 ],
               )

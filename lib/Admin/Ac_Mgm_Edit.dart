@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:video_player_pi/Map/folder_pck.dart';
 import 'package:http/http.dart' as http;
+import 'package:video_player_pi/Map/test.dart';
 import 'package:video_player_pi/Map/user_access.dart';
 
 import 'home.dart';
 
 class Ac_Mgm_Edit_Admin extends StatefulWidget {
   String id, nama, username, email, password;
-  Ac_Mgm_Edit_Admin(
-      this.id, this.nama, this.username, this.email, this.password);
+  Ac_Mgm_Edit_Admin(this.id, this.nama, this.username, this.email, this.password);
   @override
   _Ac_Mgm_Edit_AdminState createState() => _Ac_Mgm_Edit_AdminState();
 }
@@ -38,9 +38,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
     if (nama.isEmpty || username.isEmpty || email.isEmpty || password.isEmpty) {
       dialogerrorisidata();
     } else {
-      Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context) =>
-              new Ac_Mgm_Admin_Edit_CheckBox(widget.id)));
+      Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Ac_Mgm_Admin_Edit_CheckBox(widget.id)));
     }
   }
 
@@ -52,8 +50,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Data yang anda masukkan kurang"),
-          content:
-              new Text("Mohon untuk periksa kembali data yang anda masukkan"),
+          content: new Text("Mohon untuk periksa kembali data yang anda masukkan"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -89,8 +86,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 30),
-                  margin:
-                      const EdgeInsets.only(top: 50, left: 20.0, right: 20.0),
+                  margin: const EdgeInsets.only(top: 50, left: 20.0, right: 20.0),
                   child: Column(children: [
                     Column(
                       children: [
@@ -98,8 +94,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Name",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -114,8 +109,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Username",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(controller: _controllerUsername)
@@ -128,8 +122,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Email",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -144,8 +137,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                           alignment: Alignment(-1, -1),
                           child: new Text(
                             "Password",
-                            style: TextStyle(
-                                fontSize: 25.0, fontFamily: 'Poppins'),
+                            style: TextStyle(fontSize: 25.0, fontFamily: 'Poppins'),
                           ),
                         ),
                         TextField(
@@ -171,8 +163,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                                 padding: const EdgeInsets.all(0.0),
                                 child: Container(
                                   padding: EdgeInsets.only(left: 20, right: 20),
-                                  child: Text("Hak Akses".toUpperCase(),
-                                      style: TextStyle(fontSize: 20)),
+                                  child: Text("Hak Akses".toUpperCase(), style: TextStyle(fontSize: 20)),
                                 ))),
                         Container(
                             padding: EdgeInsets.only(bottom: 20, top: 40),
@@ -187,8 +178,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
                                 padding: const EdgeInsets.all(0.0),
                                 child: Container(
                                   padding: EdgeInsets.only(left: 20, right: 20),
-                                  child: Text("Update User".toUpperCase(),
-                                      style: TextStyle(fontSize: 20)),
+                                  child: Text("Update User".toUpperCase(), style: TextStyle(fontSize: 20)),
                                 ))),
                       ],
                     )
@@ -205,29 +195,25 @@ class Ac_Mgm_Admin_Edit_CheckBox extends StatefulWidget {
   String id;
   Ac_Mgm_Admin_Edit_CheckBox(this.id);
   @override
-  Ac_Mgm_Admin_Edit_CheckBoxState createState() =>
-      Ac_Mgm_Admin_Edit_CheckBoxState();
+  Ac_Mgm_Admin_Edit_CheckBoxState createState() => Ac_Mgm_Admin_Edit_CheckBoxState();
 }
 
-class Ac_Mgm_Admin_Edit_CheckBoxState
-    extends State<Ac_Mgm_Admin_Edit_CheckBox> {
+class Ac_Mgm_Admin_Edit_CheckBoxState extends State<Ac_Mgm_Admin_Edit_CheckBox> {
   List<Folder_pck> dataFolder = [];
   List<usr_acss> dataAkses = [];
   List dataAkses_Id = List();
-  bool value = true;
-  List _selectedId = List();
+  bool value = false;
+  List _selectedId = [];
+  List<String> check_akses = [];
+  List<Test> data_full = [];
 
   void initState() {
     super.initState();
-    getData();
-    getDataAkses();
-    print("A");
+    datagather();
   }
 
   Future<List> getDataAkses() async {
-    await Future.delayed(Duration(seconds: 2));
-    final response = await http
-        .get("http://timothy.buzz/video_pi/user_account/get_user_akses.php");
+    final response = await http.get("http://timothy.buzz/video_pi/user_account/get_user_akses.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
@@ -242,9 +228,7 @@ class Ac_Mgm_Admin_Edit_CheckBoxState
   }
 
   Future<List> getData() async {
-    await Future.delayed(Duration(seconds: 2));
-    final response =
-        await http.get("http://timothy.buzz/video_pi/get_folder.php");
+    final response = await http.get("http://timothy.buzz/video_pi/get_folder.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
@@ -253,34 +237,50 @@ class Ac_Mgm_Admin_Edit_CheckBoxState
     });
   }
 
+  Future<List> datagather() async {
+    await Future.wait([getData(), getDataAkses()]);
+    setState(() {
+      for (int a = 0; a < dataFolder.length; a++) {
+        if (dataAkses_Id.contains(dataFolder[a].id)) {
+          data_full.add(Test(dataFolder[a].id, dataFolder[a].name, true));
+        } else {
+          data_full.add(Test(dataFolder[a].id, dataFolder[a].name, false));
+        }
+      }
+    });
+    cek_akses();
+  }
+
   void cek_akses() {
-    // print(dataAkses.length);
-    // print(dataFolder.length);
-    for (int a = 0; a < dataFolder.length; a++) {
-      if (dataAkses_Id.contains(dataFolder[a].id)) {
-        print('ada');
-      } else {
-        print('tidak ada');
+    for (int a = 0; a < data_full.length; a++) {
+      if (data_full[a].hasil == true) {
+        _selectedId.add(data_full[a].id);
       }
     }
   }
 
-  void cek() {
-    Navigator.of(context).push(new MaterialPageRoute(
-        builder: (BuildContext context) => new Admin_Home()));
+  void _onCategorySelected(bool selected, _searchId) {
+    if (selected == true) {
+      setState(() {
+        if (_selectedId.contains(_searchId)) {
+        } else {
+          _selectedId.add(_searchId);
+        }
+      });
+    } else {
+      setState(() {
+        if (_selectedId.contains(_searchId)) {
+          _selectedId.remove(_searchId);
+        }
+      });
+    }
   }
 
-  // void _onCategorySelected(bool selected, _searchId) {
-  //   if (selected == true) {
-  //     setState(() {
-  //       _selectedId.add(_searchId);
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _selectedId.remove(_searchId);
-  //     });
-  //   }
-  // }
+  void hasil() {
+    for (int a = 0; a < _selectedId.length; a++) {
+      print(_selectedId[a]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,60 +303,25 @@ class Ac_Mgm_Admin_Edit_CheckBoxState
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.all(20),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          //   physics: BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          itemBuilder: (builder, index) {
-                            return new GestureDetector(
-                                onTap: () {},
-                                child: LimitedBox(
-                                    maxHeight: 100,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          decoration: new BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  11, 189, 180, 1),
-                                              borderRadius:
-                                                  new BorderRadius.all(
-                                                const Radius.circular(10.0),
-                                              )),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(12),
-                                                child: Text(
-                                                  dataFolder[index].name,
-                                                  style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 20,
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(
-                                              right: 20.0),
-                                          child: Checkbox(
-                                            value: value,
-                                          ),
-                                          alignment: Alignment.centerRight,
-                                        ),
-                                      ],
-                                    )));
-                          },
-                          itemCount: dataFolder.length),
-                    ),
+                        margin: const EdgeInsets.all(20),
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            //   physics: BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            itemBuilder: (builder, index) {
+                              return new CheckboxListTile(
+                                title: Text(
+                                  data_full[index].name,
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 20, color: Colors.black),
+                                ),
+                                value: _selectedId.contains(data_full[index].id),
+                                onChanged: (bool selected) {
+                                  _onCategorySelected(selected, (data_full[index].id));
+                                },
+                              );
+                            },
+                            itemCount: data_full.length)),
                   ),
                   Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
@@ -367,13 +332,14 @@ class Ac_Mgm_Admin_Edit_CheckBoxState
                             borderRadius: BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            cek_akses();
+                          },
                           textColor: Colors.black,
                           padding: const EdgeInsets.all(0.0),
                           child: Container(
                             padding: EdgeInsets.only(left: 20, right: 20),
-                            child: Text("Update Akses".toUpperCase(),
-                                style: TextStyle(fontSize: 20)),
+                            child: Text("Update Akses".toUpperCase(), style: TextStyle(fontSize: 20)),
                           ))),
                 ],
               )

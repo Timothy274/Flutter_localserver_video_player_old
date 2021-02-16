@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
   final password = TextEditingController();
 
   Future<List<DataUser>> getUser() async {
-    final response = await http.get("http://timothy.buzz/video_pi/user.php");
+    final response = await http.get("http://timothy.buzz/video_pi/user_account/user.php");
     final responseJson = json.decode(response.body);
     setState(() {
       for (Map Data in responseJson) {
@@ -46,8 +46,7 @@ class _LoginState extends State<Login> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Error Login"),
-          content:
-              new Text("Username / Password salah, Mohon lakukan login ulang"),
+          content: new Text("Username / Password salah, Mohon lakukan login ulang"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),
@@ -65,11 +64,9 @@ class _LoginState extends State<Login> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("isLogin")) {
       if (pref.getString("username") == "admin") {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Admin_Home()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_Home()));
       } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
       }
     }
   }
@@ -97,14 +94,12 @@ class _LoginState extends State<Login> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setBool("isLogin", true);
       pref.setString("username", susername);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Admin_Home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_Home()));
     } else {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setBool("isLogin", true);
       pref.setString("username", susername);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
   }
 
@@ -123,8 +118,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        margin: const EdgeInsets.only(
-                            left: 20.0, right: 20.0, bottom: 50.0),
+                        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 50.0),
                         child: Image(
                           image: AssetImage(
                             'assets/ic_launcher.png',
@@ -134,43 +128,34 @@ class _LoginState extends State<Login> {
                       margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                       child: TextField(
                         controller: username,
-                        style:
-                            TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                        style: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           hintText: "Username",
-                          hintStyle:
-                              TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                          hintStyle: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         ),
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(
-                          top: 30, left: 20.0, right: 20.0),
+                      margin: const EdgeInsets.only(top: 30, left: 20.0, right: 20.0),
                       child: TextField(
                         controller: password,
-                        style:
-                            TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                        style: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         obscureText: true,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color.fromRGBO(11, 189, 180, 1)),
+                            borderSide: const BorderSide(color: Color.fromRGBO(11, 189, 180, 1)),
                           ),
                           hintText: "Password",
-                          hintStyle:
-                              TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
+                          hintStyle: TextStyle(color: Color.fromRGBO(11, 189, 180, 1)),
                         ),
                       ),
                     ),
@@ -189,21 +174,14 @@ class _LoginState extends State<Login> {
                                 // );
                                 validasi();
                               },
-                              child: const Text('Sign In',
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      color:
-                                          Color.fromRGBO(159, 249, 243, 98))),
+                              child: const Text('Sign In', style: TextStyle(fontSize: 30, color: Color.fromRGBO(159, 249, 243, 98))),
                             ))),
                     Divider(
                       height: 10.0,
                     ),
                     Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 20),
-                        child: Text('Sign Up',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color.fromRGBO(11, 189, 180, 1))))
+                        child: Text('Sign Up', style: TextStyle(fontSize: 15, color: Color.fromRGBO(11, 189, 180, 1))))
                   ],
                 ),
               ),
