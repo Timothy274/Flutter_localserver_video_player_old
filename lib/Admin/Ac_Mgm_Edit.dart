@@ -277,9 +277,19 @@ class Ac_Mgm_Admin_Edit_CheckBoxState extends State<Ac_Mgm_Admin_Edit_CheckBox> 
   }
 
   void hasil() {
+    var url_hapus = "http://timothy.buzz/video_pi/user_account/delete_user_akses.php";
+    var url_tambah = "http://timothy.buzz/video_pi/user_account/add_user_akses.php";
+    http.post(url_hapus, body: {
+      "ID": widget.id,
+    });
+
     for (int a = 0; a < _selectedId.length; a++) {
-      print(_selectedId[a]);
+      http.post(url_tambah, body: {
+        "ID": widget.id,
+        "Akses": _selectedId[a],
+      });
     }
+    Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Admin_Home()));
   }
 
   @override
@@ -333,7 +343,7 @@ class Ac_Mgm_Admin_Edit_CheckBoxState extends State<Ac_Mgm_Admin_Edit_CheckBox> 
                             side: BorderSide(color: Colors.white),
                           ),
                           onPressed: () {
-                            cek_akses();
+                            hasil();
                           },
                           textColor: Colors.black,
                           padding: const EdgeInsets.all(0.0),
