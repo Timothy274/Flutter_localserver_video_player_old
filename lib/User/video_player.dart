@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
-class player extends StatefulWidget {
+class Player extends StatefulWidget {
   String path;
-  player({this.path});
+  Player({this.path});
   @override
   _playerState createState() => _playerState();
 }
 
-class _playerState extends State<player> {
+class _playerState extends State<Player> {
   VideoPlayerController _controller;
   ChewieController _chewieController;
 
@@ -20,35 +20,34 @@ class _playerState extends State<player> {
     play();
   }
 
-  void play(){
+  void play() {
     String link = widget.path.substring(1);
-    String baselink = 'http://192.168.0.200/access';
+    String baselink = 'http://192.168.0.200/access/server_1';
     String linkresult = baselink + link;
     print(linkresult);
     String linkresultformat = linkresult.replaceAll(' ', '%20');
     linkresultformat = linkresultformat.replaceAll('[', '%5b');
     linkresultformat = linkresultformat.replaceAll(']', '%5d');
     print(linkresultformat);
-    
-     _controller = VideoPlayerController.network(
-        linkresultformat)
+
+    _controller = VideoPlayerController.network(linkresultformat)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
-      // Try playing around with some of these other options:
+    // Try playing around with some of these other options:
 
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      // autoInitialize: true,
+    // showControls: false,
+    // materialProgressColors: ChewieProgressColors(
+    //   playedColor: Colors.red,
+    //   handleColor: Colors.blue,
+    //   backgroundColor: Colors.grey,
+    //   bufferedColor: Colors.lightGreen,
+    // ),
+    // placeholder: Container(
+    //   color: Colors.grey,
+    // ),
+    // autoInitialize: true,
   }
 
   @override
@@ -74,9 +73,7 @@ class _playerState extends State<player> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             setState(() {
-              _controller.value.isPlaying
-                  ? _controller.pause()
-                  : _controller.play();
+              _controller.value.isPlaying ? _controller.pause() : _controller.play();
             });
           },
           child: Icon(

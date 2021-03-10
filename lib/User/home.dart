@@ -222,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onTap: () => Navigator.of(context).push(new MaterialPageRoute(
                                       builder: (BuildContext context) => new Sub_Folder(
                                             path: _filtered[index].path,
+                                            name: _filtered[index].name,
                                           ))),
                                   child: LimitedBox(
                                     maxHeight: 150,
