@@ -67,7 +67,7 @@ class _Ac_Mgm_Edit_AdminState extends State<Ac_Mgm_Edit_Admin> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         body: Container(
           decoration: BoxDecoration(color: Color.fromRGBO(159, 249, 243, 98)),
@@ -295,7 +295,7 @@ class Ac_Mgm_Admin_Edit_CheckBoxState extends State<Ac_Mgm_Admin_Edit_CheckBox> 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         body: Container(
           decoration: BoxDecoration(color: Color.fromRGBO(159, 249, 243, 98)),

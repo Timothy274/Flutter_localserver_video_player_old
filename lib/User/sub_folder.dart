@@ -65,7 +65,6 @@ class _Sub_FolderState extends State<Sub_Folder> {
 
   void pass(path) {
     String Name = path.toString().toLowerCase();
-    print(Name);
     if (Name.endsWith('.mp4') || Name.endsWith('.mkv')) {
       Navigator.of(context).push(new MaterialPageRoute(
           builder: (BuildContext context) => new Player(
@@ -163,6 +162,7 @@ class _Sub_FolderState extends State<Sub_Folder> {
                           return new GestureDetector(
                               onTap: () {
                                 pass(_filtered[index].path);
+                                // Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Preview_Video()));
                               },
                               child: LimitedBox(
                                 maxHeight: 150,

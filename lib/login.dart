@@ -108,7 +108,7 @@ class _LoginState extends State<Login> {
     return MaterialApp(
         home: Scaffold(
       resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(color: Color.fromRGBO(159, 249, 243, 98)),
         child: Stack(
