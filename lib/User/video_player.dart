@@ -63,23 +63,25 @@ class _playerState extends State<Player> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-            child: FutureBuilder(
-                future: initializePlayer(),
-                builder: (context, i) {
-                  if (i.hasError) print(i.error);
-                  return _chewieController != null && _chewieController.videoPlayerController.value.initialized
-                      ? Chewie(
-                          controller: _chewieController,
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            CircularProgressIndicator(),
-                          ],
-                        );
-                })));
+    return Scaffold(
+      body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+              child: FutureBuilder(
+                  future: initializePlayer(),
+                  builder: (context, i) {
+                    if (i.hasError) print(i.error);
+                    return _chewieController != null && _chewieController.videoPlayerController.value.initialized
+                        ? Chewie(
+                            controller: _chewieController,
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              CircularProgressIndicator(),
+                            ],
+                          );
+                  }))),
+    );
   }
 }

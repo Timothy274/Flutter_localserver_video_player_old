@@ -35,6 +35,7 @@ dependencies:
   pull_to_refresh: ^1.5.7
   shared_preferences: ^0.5.12+4
   jiffy: ^2.1.2
+  better_player: ^0.0.61
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,7 @@ flutter:
     - assets/menu.png
     - assets/search.png
     - assets/ic_launcher.png
+    - assets/Pi_Play.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

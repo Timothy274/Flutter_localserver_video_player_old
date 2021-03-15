@@ -12,19 +12,6 @@ import '../Map/folder.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -41,6 +28,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Folder> _filtered = [];
   List<Folder_pck> dataFolder = [];
   List<String> dataFolderPil = [];
+  Icon _searchIcon = new Icon(
+    Icons.search,
+    color: Colors.white,
+    size: 30,
+  );
+  Widget _appBarTitle = new Text('Pi Play');
 
   String filter;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -92,7 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (query.isNotEmpty) {
       List<Folder> dummyListData = List<Folder>();
       dummySearchList.forEach((item) {
-        if (item.name.contains(query)) {
+        var name = item.name.toLowerCase();
+        if (name.contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
@@ -161,113 +155,123 @@ class _MyHomePageState extends State<MyHomePage> {
     _refreshController.refreshCompleted();
   }
 
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: controller,
+          decoration: new InputDecoration(prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
+          onChanged: (value) {
+            _alterfilter(value);
+          },
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text('Pi Play');
+        controller.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           key: scaffoldKey,
+          appBar: AppBar(
+            leading: Image(image: AssetImage('assets/Pi_Play.png')),
+            title: _appBarTitle,
+            backgroundColor: Color.fromRGBO(11, 189, 180, 1),
+            actions: [
+              IconButton(
+                  icon: _searchIcon,
+                  onPressed: () {
+                    _searchPressed();
+                  }),
+              IconButton(
+                  icon: Icon(
+                    Icons.dashboard,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Profile()));
+                  }),
+              IconButton(
+                  icon: Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Profile()));
+                  })
+            ],
+          ),
           body: Center(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 50),
-                        width: 300,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(width: 1, color: Color.fromRGBO(11, 189, 180, 1), style: BorderStyle.solid)),
-                        child: TextField(
-                          decoration:
-                              InputDecoration(hintText: 'Search your videos', contentPadding: EdgeInsets.all(15), border: InputBorder.none),
-                          controller: controller,
-                          onChanged: (value) {
-                            _alterfilter(value);
-                          },
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: const EdgeInsets.only(top: 50),
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Profile()));
-                            },
-                            child: Icon(
-                              Icons.account_circle_rounded,
-                              color: Color.fromRGBO(11, 189, 180, 1),
-                              size: 40,
-                            )))
-                  ],
-                ),
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.all(20),
-                      child: SmartRefresher(
-                        enablePullUp: true,
-                        header: ClassicHeader(),
-                        controller: _refreshController,
-                        onRefresh: _onRefresh,
-                        child: ListView.separated(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            //   physics: BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            itemBuilder: (builder, index) {
-                              return new GestureDetector(
-                                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-                                      builder: (BuildContext context) => new Sub_Folder(
-                                            path: _filtered[index].path,
-                                            name: _filtered[index].name,
-                                          ))),
-                                  child: LimitedBox(
-                                    maxHeight: 150,
-                                    child: Container(
-                                      decoration: new BoxDecoration(
-                                          color: Color.fromRGBO(11, 189, 180, 1),
-                                          borderRadius: new BorderRadius.all(
-                                            const Radius.circular(10.0),
-                                          )),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.all(12),
-                                            child: Text(
-                                              _filtered[index].name,
-                                              style: TextStyle(fontFamily: 'BalsamiqSans_Blod', fontSize: 20, color: Colors.white),
-                                            ),
-                                          ),
-                                          // Padding(
-                                          //   padding: const EdgeInsets.all(10),
-                                          //   child: Stack(
-                                          //   alignment: FractionalOffset.bottomRight +
-                                          //       const FractionalOffset(-0.1, -0.1),
-                                          //   children: <Widget>[
-                                          //   ]),
-                                          // )
-                                        ],
+              child: Expanded(
+            child: Container(
+                margin: const EdgeInsets.all(20),
+                child: SmartRefresher(
+                  enablePullUp: true,
+                  header: ClassicHeader(),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  child: ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      //   physics: BouncingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      itemBuilder: (builder, index) {
+                        return new GestureDetector(
+                            onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                                builder: (BuildContext context) => new Sub_Folder(
+                                      path: _filtered[index].path,
+                                      name: _filtered[index].name,
+                                    ))),
+                            child: LimitedBox(
+                              maxHeight: 150,
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                    color: Color.fromRGBO(11, 189, 180, 1),
+                                    borderRadius: new BorderRadius.all(
+                                      const Radius.circular(10.0),
+                                    )),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        _filtered[index].name,
+                                        style: TextStyle(fontFamily: 'BalsamiqSans_Blod', fontSize: 20, color: Colors.white),
                                       ),
                                     ),
-                                  ));
-                            },
-                            separatorBuilder: (builder, index) {
-                              return Divider(
-                                height: 10,
-                                thickness: 0,
-                              );
-                            },
-                            itemCount: _filtered.length),
-                      )),
-                )
-              ],
-            ),
-          ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(10),
+                                    //   child: Stack(
+                                    //   alignment: FractionalOffset.bottomRight +
+                                    //       const FractionalOffset(-0.1, -0.1),
+                                    //   children: <Widget>[
+                                    //   ]),
+                                    // )
+                                  ],
+                                ),
+                              ),
+                            ));
+                      },
+                      separatorBuilder: (builder, index) {
+                        return Divider(
+                          height: 10,
+                          thickness: 0,
+                        );
+                      },
+                      itemCount: _filtered.length),
+                )),
+          )),
         ));
   }
 }

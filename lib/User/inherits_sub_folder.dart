@@ -1,24 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:video_player_pi/User/inherits_sub_folder.dart';
 import 'package:video_player_pi/User/preview.dart';
 import 'package:video_player_pi/User/video_player.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../Map/folder.dart';
 
-class Sub_Folder extends StatefulWidget {
+class inherits_sub extends StatefulWidget {
   @override
   String path;
-  String name;
 
-  Sub_Folder({this.path, this.name});
-
-  _Sub_FolderState createState() => _Sub_FolderState();
+  inherits_sub({this.path});
+  _inherits_subState createState() => _inherits_subState();
 }
 
-class _Sub_FolderState extends State<Sub_Folder> {
+class _inherits_subState extends State<inherits_sub> {
   int _counter = 0;
   String _result = '';
   List<Folder> datavideo = [];
@@ -72,19 +69,10 @@ class _Sub_FolderState extends State<Sub_Folder> {
   }
 
   void pass(path) {
-    String Name = path.toString().toLowerCase();
-    if (Name.endsWith('.mp4') || Name.endsWith('.mkv')) {
-      Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context) => new Player(
-                path: path,
-              )));
-    } else {
-      Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context) => new inherits_sub(
-                path: path,
-              )));
-      // print(path);
-    }
+    Navigator.of(context).push(new MaterialPageRoute(
+        builder: (BuildContext context) => new Player(
+              path: path,
+            )));
   }
 
   void _searchPressed() {
